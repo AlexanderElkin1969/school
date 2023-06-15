@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
@@ -35,6 +36,12 @@ public class FacultyService {
 
     public boolean isFoundFaculty(Long id) {
         return faculties.containsKey(id);
+    }
+
+    public Collection<Faculty> allFacultyByColor(String color) {
+        return faculties.values().stream()
+                .filter(f -> f.getColor().equals(color))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public Collection<Faculty> allFaculty() {

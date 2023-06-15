@@ -39,9 +39,10 @@ public class StudentService {
         return students.containsKey(id);
     }
 
-    public Collection<Student> allStudentByAge(int age ) {
-        return Collections.unmodifiableCollection(students.values().stream().
-                filter(s -> s.getAge() == age).collect(Collectors.toList()));
+    public Collection<Student> allStudentByAge(int age) {
+        return students.values().stream()
+                .filter(s -> s.getAge() == age)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public Collection<Student> allStudent() {
