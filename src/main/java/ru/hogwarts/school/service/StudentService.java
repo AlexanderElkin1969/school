@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -36,6 +37,11 @@ public class StudentService {
 
     public boolean isFoundStudent(Long id) {
         return students.containsKey(id);
+    }
+
+    public Collection<Student> allStudentByAge(int age ) {
+        return Collections.unmodifiableCollection(students.values().stream().
+                filter(s -> s.getAge() == age).collect(Collectors.toList()));
     }
 
     public Collection<Student> allStudent() {

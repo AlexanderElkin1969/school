@@ -48,7 +48,11 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(studentService.deleteStudent(id));
+    }
 
+    @GetMapping("age/{age}")
+    public Collection<Student> getAllByAge(@PathVariable int age){
+        return studentService.allStudentByAge(age);
     }
 
     @GetMapping
