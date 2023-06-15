@@ -8,14 +8,6 @@ public class Faculty {
     private String name;
     private String color;
 
-    private static  Long counter = 0L;
-
-    public Faculty(String name, String color) {
-        this.id = ++ counter;
-        this.name = name;
-        this.color = color;
-    }
-
     public Long getId() {
         return id;
     }
@@ -28,6 +20,10 @@ public class Faculty {
         return color;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -38,7 +34,7 @@ public class Faculty {
 
     @Override
     public String toString() {
-        return "Student{" + '\'' +
+        return "Student{" +
                 "id =" + id + '\'' +
                 ", name ='" + name + '\'' +
                 ", color =" + color + '\'' +
@@ -50,13 +46,12 @@ public class Faculty {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Faculty faculty = (Faculty) o;
-        return  id.equals(faculty.id);
+        return  id.equals(faculty.id)&&Objects.equals(name, faculty.getName())&&Objects.equals(color, faculty.getColor());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(color);
     }
-
 
 }
