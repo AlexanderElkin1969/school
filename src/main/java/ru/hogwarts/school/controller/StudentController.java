@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
+
 @RequestMapping ("student")
 @RestController
 public class StudentController {
@@ -30,8 +32,25 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(studentService.getStudentById(id));
+    }
+
+    @PutMapping
+    public ResponseEntity updateStudent(@RequestBody Student student){
+        return ResponseEntity.ok(studentService.updateStudent(student));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteStudent(@PathVariable Long id){
+        if (!studentService.isFoundStudent(id)){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(studentService.deleteStudent(id));
 
     }
 
+    @GetMapping
+    public Collection<Student> getAll(){
+        return studentService.allStudent();
+    }
 
 }

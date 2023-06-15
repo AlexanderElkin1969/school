@@ -7,14 +7,6 @@ public class Student {
     private String name;
     private int age;
 
-    private static  Long counter = 0L;
-
-    public Student(String name, int age) {
-        this.id = ++ counter;
-        this.name = name;
-        this.age = age;
-    }
-
     public Long getId() {
         return id;
     }
@@ -27,6 +19,10 @@ public class Student {
         return age;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -37,7 +33,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" + '\'' +
+        return "Student{" +
                 "id=" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", age=" + age + '\'' +
@@ -49,7 +45,7 @@ public class Student {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return  id.equals(student.id);
+        return  id.equals(student.id)&&Objects.equals(name,student.getName())&&age==student.getAge();
     }
 
     @Override
