@@ -18,7 +18,7 @@ public class FacultyController {
     }
 
     @PostMapping
-    public ResponseEntity createFaculty(@RequestBody Faculty faculty){
+    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty){
         Faculty createFaculty = facultyService.createFaculty(faculty);
         if (createFaculty == null){
             return ResponseEntity.badRequest().build();
@@ -27,7 +27,7 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity getFaculty(@PathVariable Long id){
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id){
         if (!facultyService.isFoundFaculty(id)){
             return ResponseEntity.notFound().build();
         }
@@ -35,7 +35,7 @@ public class FacultyController {
     }
 
     @PutMapping
-    public ResponseEntity updateFaculty(@RequestBody Faculty faculty) {
+    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
         if (!facultyService.isFoundFaculty(faculty.getId())) {
             return ResponseEntity.badRequest().build();
         }
@@ -43,7 +43,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteFaculty(@PathVariable Long id){
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id){
         if (!facultyService.isFoundFaculty(id)){
             return ResponseEntity.notFound().build();
         }
