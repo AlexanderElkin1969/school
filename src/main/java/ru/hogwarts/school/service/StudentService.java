@@ -2,7 +2,7 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.repository.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-
 
     private final StudentRepository studentRepository;
 

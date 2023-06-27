@@ -2,50 +2,47 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
 
-    private final Map<Long, Faculty> faculties = new HashMap<>();
-    private Long generatedId = 1L;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(generatedId);
-        faculties.put(generatedId++, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty getFacultyById(Long id) {
-        return faculties.get(id);
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty updateFaculty(Faculty faculty) {
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty deleteFaculty(Long id) {
-        return faculties.remove(id);
-    }
-
-    public boolean isFoundFaculty(Long id) {
-        return faculties.containsKey(id);
+        Faculty faculty = facultyRepository.findById(id).get();
+        facultyRepository.deleteById(id);
+        return faculty;
     }
 
     public Collection<Faculty> allFacultyByColor(String color) {
-        return faculties.values().stream()
+        return facultyRepository.findAll().stream()
                 .filter(f -> f.getColor().equals(color))
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public Collection<Faculty> allFaculty() {
-        return Collections.unmodifiableCollection(faculties.values());
+        return Collections.unmodifiableCollection(facultyRepository.findAll());
     }
 
 }

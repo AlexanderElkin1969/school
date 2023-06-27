@@ -2,7 +2,7 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
@@ -18,36 +18,31 @@ public class FacultyController {
     }
 
     @PostMapping
-    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty){
-        Faculty createFaculty = facultyService.createFaculty(faculty);
-        if (createFaculty == null){
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(createFaculty);
+    public Faculty createFaculty(@RequestBody Faculty faculty){
+        return facultyService.createFaculty(faculty);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id){
-        if (!facultyService.isFoundFaculty(id)){
+        Faculty foundFaculty = facultyService.getFacultyById(id);
+        if (foundFaculty == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(facultyService.getFacultyById(id));
+        return ResponseEntity.ok(foundFaculty);
     }
 
     @PutMapping
-    public ResponseEntity<Faculty> updateFaculty(@RequestBody Faculty faculty) {
-        if (!facultyService.isFoundFaculty(faculty.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(facultyService.updateFaculty(faculty));
+    public Faculty updateFaculty(@RequestBody Faculty faculty) {
+        return facultyService.updateFaculty(faculty);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id){
-        if (!facultyService.isFoundFaculty(id)){
+        Faculty deletedFaculty = facultyService.deleteFaculty(id);
+        if (deletedFaculty == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(facultyService.deleteFaculty(id));
+        return ResponseEntity.ok(deletedFaculty);
     }
 
     @GetMapping("color/{color}")
