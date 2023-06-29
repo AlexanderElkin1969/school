@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @RequestMapping ("faculty")
 @RestController
+@Tag(name = "Контроллер для работы с факультетами")
 public class FacultyController {
 
     private final FacultyService facultyService;
@@ -18,17 +20,13 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty faculty){
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
         return facultyService.createFaculty(faculty);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id){
-        Faculty foundFaculty = facultyService.getFacultyById(id);
-        if (foundFaculty == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(foundFaculty);
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+        return ResponseEntity.ok(facultyService.getFacultyById(id));
     }
 
     @PutMapping
@@ -37,21 +35,17 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id){
-        Faculty deletedFaculty = facultyService.deleteFaculty(id);
-        if (deletedFaculty == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedFaculty);
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
+        return ResponseEntity.ok(facultyService.deleteFaculty(id));
     }
 
     @GetMapping("color/{color}")
-    public Collection<Faculty> getAllByColor(@PathVariable String color){
+    public Collection<Faculty> getAllByColor(@PathVariable String color) {
         return facultyService.allFacultyByColor(color);
     }
 
     @GetMapping
-    public Collection<Faculty> getAll(){
+    public Collection<Faculty> getAll() {
         return facultyService.allFaculty();
     }
 

@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @RequestMapping ("student")
 @RestController
+@Tag(name = "Контроллер для работы со студентами")
 public class StudentController {
 
     private final StudentService studentService;
@@ -18,40 +20,32 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student){
+    public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id){
-        Student foundStudent = studentService.getStudentById(id);
-        if (foundStudent == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(foundStudent);
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
     @PutMapping
-    public Student updateStudent(@RequestBody Student student){
+    public Student updateStudent(@RequestBody Student student) {
         return studentService.updateStudent(student);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long id){
-        Student deletedStudent = studentService.deleteStudent(id);
-        if (deletedStudent == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(deletedStudent);
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.deleteStudent(id));
     }
 
     @GetMapping("age/{age}")
-    public Collection<Student> getAllByAge(@PathVariable int age){
+    public Collection<Student> getAllByAge(@PathVariable int age) {
         return studentService.allStudentByAge(age);
     }
 
     @GetMapping
-    public Collection<Student> getAll(){
+    public Collection<Student> getAll() {
         return studentService.allStudent();
     }
 
