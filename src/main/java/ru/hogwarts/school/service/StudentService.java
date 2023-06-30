@@ -4,9 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.*;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class StudentService {
@@ -36,9 +34,11 @@ public class StudentService {
     }
 
     public Collection<Student> allStudentByAge(int age) {
-        return studentRepository.findAll().stream()
-                .filter(s -> s.getAge() == age)
-                .collect(Collectors.toUnmodifiableList());
+        return Collections.unmodifiableCollection(studentRepository.findByAge(age));
+    }
+
+    public Collection<Student> allStudentByAgeBetween(int min, int max) {
+        return Collections.unmodifiableCollection(studentRepository.findByAgeBetween(min, max));
     }
 
     public Collection<Student> allStudent() {
