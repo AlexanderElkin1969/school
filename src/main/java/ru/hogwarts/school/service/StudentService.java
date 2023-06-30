@@ -34,11 +34,11 @@ public class StudentService {
     }
 
     public Collection<Student> allStudentByAge(int age) {
-        return Collections.unmodifiableCollection(studentRepository.findByAge(age));
+        return Collections.unmodifiableCollection(studentRepository.findAllByAge(age));
     }
 
     public Collection<Student> allStudentByAgeBetween(int min, int max) {
-        return Collections.unmodifiableCollection(studentRepository.findByAgeBetween(min, max));
+        return Collections.unmodifiableCollection(studentRepository.findAllByAgeBetween(min, max));
     }
 
     public Collection<Student> allStudent() {
