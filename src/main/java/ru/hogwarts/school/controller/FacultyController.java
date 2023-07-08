@@ -4,11 +4,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 
-@RequestMapping ("faculty")
+@RequestMapping("faculty")
 @RestController
 @Tag(name = "Контроллер для работы с факультетами")
 public class FacultyController {
@@ -49,7 +50,12 @@ public class FacultyController {
         return facultyService.allFacultyByColorOrNameIgnoreCase(color, name);
     }
 
-    @GetMapping
+    @GetMapping("{id}/students")
+    public Collection<Student> getStudentByFaculty(@PathVariable Long id) {
+        return facultyService.allStudentByFaculty(id);
+    }
+
+    @GetMapping("all")
     public Collection<Faculty> getAll() {
         return facultyService.allFaculty();
     }

@@ -3,12 +3,13 @@ package ru.hogwarts.school.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 
-@RequestMapping ("student")
+@RequestMapping("student")
 @RestController
 @Tag(name = "Контроллер для работы со студентами")
 public class StudentController {
@@ -49,7 +50,12 @@ public class StudentController {
         return studentService.allStudentByAgeBetween(min, max);
     }
 
-    @GetMapping
+    @GetMapping("{id}/faculty")
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getFacultyById(id));
+    }
+
+    @GetMapping("all")
     public Collection<Student> getAll() {
         return studentService.allStudent();
     }
