@@ -1,12 +1,16 @@
 package ru.hogwarts.school.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
+import java.io.IOException;
 import java.util.Collection;
 
 @RequestMapping("student")
@@ -15,9 +19,11 @@ import java.util.Collection;
 public class StudentController {
 
     private final StudentService studentService;
+    private final AvatarService avatarService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, AvatarService avatarService) {
         this.studentService = studentService;
+        this.avatarService = avatarService;
     }
 
     @PostMapping
@@ -58,6 +64,16 @@ public class StudentController {
     @GetMapping("all")
     public Collection<Student> getAll() {
         return studentService.allStudent();
+    }
+
+    @PostMapping(value = "{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadAvatar(@PathVariable Long id,
+                                               @RequestParam MultipartFile avatar ) throws IOException {
+        if (avatar.getSize() >= 1024*200){
+            return ResponseEntity.badRequest().body("Файл слишком большой. Размер не должен превышать 200 Кбайт.");
+        }
+        avatarService.uploadAvatar( id, avatar);
+        return ResponseEntity.ok().build();
     }
 
 }
