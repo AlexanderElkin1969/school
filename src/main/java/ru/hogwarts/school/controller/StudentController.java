@@ -13,7 +13,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.io.IOException;
 import java.util.Collection;
 
-@RequestMapping("student")
+@RequestMapping("/student")
 @RestController
 @Tag(name = "Контроллер для работы со студентами")
 public class StudentController {
@@ -31,7 +31,7 @@ public class StudentController {
         return studentService.createStudent(student);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
@@ -41,32 +41,32 @@ public class StudentController {
         return studentService.updateStudent(student);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.deleteStudent(id));
     }
 
-    @GetMapping("age/{age}")
+    @GetMapping("/age/{age}")
     public Collection<Student> getAllByAge(@PathVariable int age) {
         return studentService.allStudentByAge(age);
     }
 
-    @GetMapping("age/{min}/between/{max}")
+    @GetMapping("/age/{min}/between/{max}")
     public Collection<Student> getAllByAgeBetween(@PathVariable int min, @PathVariable int max) {
         return studentService.allStudentByAgeBetween(min, max);
     }
 
-    @GetMapping("{id}/faculty")
+    @GetMapping("/{id}/faculty")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getFacultyById(id));
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public Collection<Student> getAll() {
         return studentService.allStudent();
     }
 
-    @PostMapping(value = "{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long id,
                                                @RequestParam MultipartFile avatar ) throws IOException {
         if (avatar.getSize() >= 1024*200){

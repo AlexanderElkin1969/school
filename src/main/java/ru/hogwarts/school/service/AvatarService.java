@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
@@ -12,7 +13,6 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -33,11 +33,14 @@ public class AvatarService {
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentRepository.findById(studentId).get();
-
+        Avatar avatar = findAvatarByStudentId(studentId);
+        if (avatar.getFilePath() != null){
+            Path oldFilePath = Path.of(avatar.getFilePath());
+            Files.deleteIfExists(oldFilePath);
+        }
         Path filePath = Path.of(avatarDir, studentId + "."
-                + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
+                + StringUtils.getFilenameExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
 
         try(InputStream is = file.getInputStream();
             OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
@@ -47,7 +50,6 @@ public class AvatarService {
             bis.transferTo(bos);
         }
 
-        Avatar avatar = findAvatarByStudentId(studentId);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());
         avatar.setMediaType(file.getContentType());
@@ -61,7 +63,4 @@ public class AvatarService {
         return avatarRepository.findByStudent_Id(studentId).orElse(new Avatar());
     }
 
-    private String getExtension(String fileName){
-        return fileName.substring(fileName.lastIndexOf('.') + 1);
-    }
 }
