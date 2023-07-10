@@ -13,17 +13,19 @@ public class Student {
     private int age;
 
     @ManyToOne
-    @JoinColumn(nullable = false, name = "faculty_Id")
+    @JoinColumn(nullable = false, name = "faculty_id")
     private Faculty faculty;
+    private String avatarUrl;
 
     protected Student() {
     }
 
-    public Student(Long id, String name, int age, Faculty faculty) {
+    public Student(Long id, String name, int age, Faculty faculty, String avatarUrl) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.faculty = faculty;
+        this.avatarUrl = avatarUrl;
     }
 
     public Long getId() {
@@ -42,6 +44,10 @@ public class Student {
         return faculty;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -56,6 +62,10 @@ public class Student {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     @Override
