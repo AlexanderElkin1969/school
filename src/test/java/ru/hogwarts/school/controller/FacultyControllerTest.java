@@ -18,11 +18,12 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -128,6 +129,58 @@ public class FacultyControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
         verify(facultyRepository, only()).findById(any());
+    }
+
+    @Test
+    public void getAllTest() throws Exception{
+        List<Faculty> faculties = new ArrayList<>(List.of(
+                new Faculty(1L, "TestName", "Color"),
+                new Faculty(2L, "Name", "TestColor"),
+                new Faculty(3L, "Name", "Color")
+        ));
+        when(facultyRepository.findAll()).thenReturn(faculties);
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/all")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("TestName"))
+                .andExpect(jsonPath("$[1].name").value("Name"))
+                .andExpect(jsonPath("$[2].name").value("Name"))
+                .andExpect(jsonPath("$[2].color").value("Color"));
+        verify(facultyRepository, only()).findAll();
+        Mockito.reset(facultyRepository);
+
+        when(facultyRepository.findAll()).thenReturn(new ArrayList<>());
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/all")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(facultyRepository, only()).findAll();
+    }
+
+    @Test
+    public void getAllByColorTest() throws Exception{
+        List<Faculty> faculties = new ArrayList<>(List.of(
+                new Faculty(1L, "TestName", "Color"),
+                new Faculty(3L, "Name", "Color")
+        ));
+        when(facultyRepository.findAllByColor(any())).thenReturn(faculties);
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/color/Color")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("TestName"))
+                .andExpect(jsonPath("$[0].color").value("Color"))
+                .andExpect(jsonPath("$[1].id").value(3L))
+                .andExpect(jsonPath("$[1].name").value("Name"))
+                .andExpect(jsonPath("$[1].color").value("Color"));
+        verify(facultyRepository, only()).findAllByColor(any());
+        Mockito.reset(facultyRepository);
+
+        when(facultyRepository.findAllByColor(any())).thenReturn(new ArrayList<>());
+        mockMvc.perform(MockMvcRequestBuilders.get("/faculty/color/Color")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(facultyRepository, only()).findAllByColor(any());
     }
 
 }
