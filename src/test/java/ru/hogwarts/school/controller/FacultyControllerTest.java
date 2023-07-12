@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,7 +61,6 @@ public class FacultyControllerTest {
     @Test
     public void createFacultyTest() throws Exception{
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
-
         mockMvc.perform(MockMvcRequestBuilders.post("/faculty")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(facultyObject.toString())
@@ -69,30 +69,26 @@ public class FacultyControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.color").value(color));
-
         verify(facultyRepository, only()).save(any());
     }
 
     @Test
     public void getFacultyTest() throws Exception{
         when(facultyRepository.findById(eq(4L))).thenReturn(Optional.of(faculty));
-
         mockMvc.perform(MockMvcRequestBuilders.get("/faculty/4")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.color").value(color));
-
         verify(facultyRepository, only()).findById(any());
+        Mockito.reset(facultyRepository);
 
         when(facultyRepository.findById(eq(5L))).thenReturn(Optional.empty());
-
         mockMvc.perform(MockMvcRequestBuilders.get("/faculty/5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
-
-        verify(facultyRepository, times(2)).findById(any());
+        verify(facultyRepository, only()).findById(any());
     }
 
     @Test
@@ -105,7 +101,6 @@ public class FacultyControllerTest {
         facultyObject.put("color", newColor);
 
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
-
         mockMvc.perform(MockMvcRequestBuilders.put("/faculty")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(facultyObject.toString())
@@ -114,31 +109,25 @@ public class FacultyControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(newName))
                 .andExpect(jsonPath("$.color").value(newColor));
-
         verify(facultyRepository, only()).save(any());
     }
 
     @Test
     public void deleteFacultyTest() throws Exception{
         when(facultyRepository.findById(eq(4L))).thenReturn(Optional.of(faculty));
-
         mockMvc.perform(MockMvcRequestBuilders.delete("/faculty/4")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        /*        .andExpect(jsonPath("$.id").value(id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
-                .andExpect(jsonPath("$.color").value(color)); */
-
-        verify(facultyRepository, only()).findById(any());
-        verify(facultyRepository, only()).delete(any());
+                .andExpect(jsonPath("$.color").value(color));
+        Mockito.reset(facultyRepository);
 
         when(facultyRepository.findById(eq(5L))).thenReturn(Optional.empty());
-
         mockMvc.perform(MockMvcRequestBuilders.delete("/faculty/5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
-
-        verify(facultyRepository, times(2)).findById(any());
+        verify(facultyRepository, only()).findById(any());
     }
 
 }
