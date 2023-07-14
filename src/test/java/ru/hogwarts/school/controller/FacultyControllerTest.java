@@ -20,6 +20,7 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,7 +152,7 @@ public class FacultyControllerTest {
         verify(facultyRepository, only()).findAll();
         Mockito.reset(facultyRepository);
 
-        when(facultyRepository.findAll()).thenReturn(new ArrayList<>());
+        when(facultyRepository.findAll()).thenReturn(Collections.emptyList());
         mockMvc.perform(MockMvcRequestBuilders.get("/faculty/all")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -177,7 +178,7 @@ public class FacultyControllerTest {
         verify(facultyRepository, only()).findAllByColor(any());
         Mockito.reset(facultyRepository);
 
-        when(facultyRepository.findAllByColor(any())).thenReturn(new ArrayList<>());
+        when(facultyRepository.findAllByColor(any())).thenReturn(Collections.emptyList());
         mockMvc.perform(MockMvcRequestBuilders.get("/faculty/color/NewColor")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
