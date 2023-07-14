@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.model.Faculty;
@@ -55,6 +57,49 @@ public class StudentControllerTest {
         Assertions.assertNotEquals(0L, responseEntity.getBody().getId());
         Assertions.assertEquals("Garry Potter", responseEntity.getBody().getName());
         Assertions.assertEquals(13, responseEntity.getBody().getAge());
+    }
+
+    @Test
+    public void getStudentTest() throws Exception{
+        Student testStudent = new Student( 1L, "Garry Potter", 13, faculty, "");
+        ResponseEntity<Student> responseEntity = restTemplate.postForEntity(
+                "http://localhost:"+port+"/student",
+                testStudent,
+                Student.class
+        );
+        Long id = responseEntity.getBody().getId();
+        ResponseEntity<Student> resultEntity = restTemplate.getForEntity(
+                "http://localhost:"+port+"/student/"+id,
+                Student.class
+        );
+        Assertions.assertEquals(HttpStatus.OK, resultEntity.getStatusCode());
+        Assertions.assertEquals("Garry Potter", resultEntity.getBody().getName());
+        Assertions.assertEquals(13, resultEntity.getBody().getAge());
+        Assertions.assertEquals(id, resultEntity.getBody().getId());
+    }
+
+    @Test
+    public void updateStudentTest() throws Exception{
+        Student testStudent = new Student( 1L, "Garry Potter", 13, faculty, "");
+        ResponseEntity<Student> responseEntity = restTemplate.postForEntity(
+                "http://localhost:"+port+"/student",
+                testStudent,
+                Student.class
+        );
+        Long id = responseEntity.getBody().getId();
+        testStudent.setId(id);
+        testStudent.setName("Ron Weasley");
+        ResponseEntity<Student> resultEntity = restTemplate.exchange(
+                "http://localhost:"+port+"/student",
+                HttpMethod.PUT,
+                new HttpEntity<>(testStudent),
+                Student.class
+                );
+
+        Assertions.assertEquals(HttpStatus.OK, resultEntity.getStatusCode());
+        Assertions.assertEquals("Ron Weasley", resultEntity.getBody().getName());
+        Assertions.assertEquals(13, resultEntity.getBody().getAge());
+        Assertions.assertEquals(id, resultEntity.getBody().getId());
     }
 
 }
