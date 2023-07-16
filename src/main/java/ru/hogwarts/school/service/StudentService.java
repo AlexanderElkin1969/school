@@ -69,4 +69,8 @@ public class StudentService {
         return studentRepository.getAverageAge();
     }
 
+    public List<Student> getLastStudent(){
+        return studentRepository.getLastStudent();
+    }
+
 }
