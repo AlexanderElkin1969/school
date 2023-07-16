@@ -2,8 +2,8 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.NotFoundFacultyException;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.entity.Faculty;
+import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.repository.*;
 
 import java.util.*;
@@ -59,6 +59,14 @@ public class StudentService {
 
     public Collection<Student> allStudent() {
         return Collections.unmodifiableCollection(studentRepository.findAll());
+    }
+
+    public int getCountStudents(){
+        return studentRepository.getCountStudents();
+    }
+
+    public Float getAverageAge(){
+        return studentRepository.getAverageAge();
     }
 
 }

@@ -2,7 +2,7 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.model.Avatar;
+import ru.hogwarts.school.entity.Avatar;
 import ru.hogwarts.school.service.AvatarService;
 
 import javax.servlet.http.HttpServletResponse;

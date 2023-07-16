@@ -1,8 +1,9 @@
 package ru.hogwarts.school.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import org.springframework.data.jpa.repository.Query;
+import ru.hogwarts.school.entity.Faculty;
+import ru.hogwarts.school.entity.Student;
 
 import java.util.List;
 
@@ -13,5 +14,11 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     List<Student> findAllByAgeBetween(int nin, int max);
 
     List<Student> findAllByFaculty(Faculty faculty);
+
+    @Query(value = "SELECT count(*) FROM student", nativeQuery = true)
+    int getCountStudents();
+
+    @Query(value = "SELECT avg(age) FROM student", nativeQuery = true)
+    Float getAverageAge();
 
 }

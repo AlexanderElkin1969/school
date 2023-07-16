@@ -5,8 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.entity.Faculty;
+import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
@@ -68,12 +68,22 @@ public class StudentController {
 
     @PatchMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long id,
-                                               @RequestParam MultipartFile avatar ) throws IOException {
-        if (avatar.getSize() >= 1024*200){
+                                               @RequestParam MultipartFile avatar) throws IOException {
+        if (avatar.getSize() >= 1024 * 200) {
             return ResponseEntity.badRequest().body("Файл слишком большой. Размер не должен превышать 200 Кбайт.");
         }
-        avatarService.uploadAvatar( id, avatar);
+        avatarService.uploadAvatar(id, avatar);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all/count")
+    public int getCountStudents() {
+        return studentService.getCountStudents();
+    }
+
+    @GetMapping("/all/age/average")
+    public Float getAverageAge() {
+        return studentService.getAverageAge();
     }
 
 }
