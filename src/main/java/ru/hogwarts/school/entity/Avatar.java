@@ -3,13 +3,13 @@ package ru.hogwarts.school.entity;
 import javax.persistence.*;
 
 @Entity
-public class Avatar {
+public class Avatar implements  AvatarList{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String filePath;
-    private long fileSize;
+    private Integer fileSize;
     private String mediaType;
     @Lob
     private byte[] data;
@@ -17,7 +17,7 @@ public class Avatar {
     @JoinColumn(nullable = false)
     private Student student;
 
-    public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
+    public Avatar(Long id, String filePath, Integer fileSize, String mediaType, byte[] data, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -37,7 +37,7 @@ public class Avatar {
         return filePath;
     }
 
-    public long getFileSize() {
+    public Integer getFileSize() {
         return fileSize;
     }
 
@@ -61,7 +61,7 @@ public class Avatar {
         this.filePath = filePath;
     }
 
-    public void setFileSize(long fileSize) {
+    public void setFileSize(Integer fileSize) {
         this.fileSize = fileSize;
     }
 

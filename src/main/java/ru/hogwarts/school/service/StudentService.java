@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.NotFoundFacultyException;
 import ru.hogwarts.school.entity.Faculty;
@@ -71,6 +72,11 @@ public class StudentService {
 
     public List<Student> getLastStudent(){
         return studentRepository.getLastStudent();
+    }
+
+    public List<Student> getLastStudent(Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page-1, size);
+        return studentRepository.findAllFromLast(pageRequest).getContent();
     }
 
 }
