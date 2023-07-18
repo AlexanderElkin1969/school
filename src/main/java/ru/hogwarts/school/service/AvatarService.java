@@ -44,6 +44,7 @@ public class AvatarService {
         Path filePath = Path.of(avatarDir, studentId + "."
                 + StringUtils.getFilenameExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
 
         try(InputStream is = file.getInputStream();
             OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
