@@ -64,9 +64,9 @@ public class AvatarService {
         avatar.setMediaType(file.getContentType());
         avatar.setData(file.getBytes());
         avatar.setStudent(student);
-        student.setAvatarUrl("http://localhost:8080/avatars/" + avatar.getId() + "/avatar-from-db");
-
         avatarRepository.save(avatar);
+
+        student.setAvatarUrl("http://localhost:8080/avatars/" + avatar.getId() + "/avatar-from-db");
     }
 
     public Avatar findAvatarByStudentId(Long studentId){
