@@ -16,19 +16,19 @@ public class SchoolExceptionHandler {
 
     @ExceptionHandler({NoSuchElementException.class})
     public ResponseEntity<?> handlerNotFoundItem(NoSuchElementException e){
-//        logger.error("Element by this Id is absent.");
+        logger.error("Element by this Id is absent.");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Element by this Id is absent. " + e.getMessage());
     }
 
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<?> handlerIllegalArgument(IllegalArgumentException e){
-//        logger.error("Значения должны быть больше 0.");
+        logger.error("Значения должны быть больше 0.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler({NotFoundFacultyException.class})
     public ResponseEntity<?> handlerNotFoundFaculty(NotFoundFacultyException e){
-//        logger.error("There is not found faculty");
+        logger.error("There is not found faculty");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
