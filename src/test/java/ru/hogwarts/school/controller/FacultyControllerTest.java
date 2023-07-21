@@ -41,6 +41,9 @@ public class FacultyControllerTest {
     @MockBean
     private StudentRepository studentRepository;
 
+    @MockBean
+    private InfoController infoController;
+
     @InjectMocks
     private FacultyController facultyController;
 
