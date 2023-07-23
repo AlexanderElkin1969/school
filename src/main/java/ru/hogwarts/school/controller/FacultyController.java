@@ -65,4 +65,15 @@ public class FacultyController {
         return facultyService.getLongestName();
     }
 
+    @GetMapping("result")
+    public int getSum() {
+        return facultyService.getSum();
+    }
+
+    @GetMapping("result-using-parallel-streams")
+    public int getSumpUsingParallelStreams() {
+        return facultyService.getSumpUsingParallelStreams();
+    }
+
+
 }
