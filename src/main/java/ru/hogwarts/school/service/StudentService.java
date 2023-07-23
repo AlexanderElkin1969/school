@@ -86,7 +86,7 @@ public class StudentService {
 
     public Float getAverageAgeUsingStream(){
         logger.info("Was invoked method for get average age students using a stream");
-        Integer sumAge = studentRepository.findAll().stream()
+        int sumAge = studentRepository.findAll().stream()
                 .map(Student::getAge)
                 .reduce(Integer::sum)
                 .get();
