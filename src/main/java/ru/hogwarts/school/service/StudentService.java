@@ -84,6 +84,15 @@ public class StudentService {
         return studentRepository.getAverageAge();
     }
 
+    public Float getAverageAgeUsingStream(){
+        logger.info("Was invoked method for get average age students using a stream");
+        Integer sumAge = studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .reduce(Integer::sum)
+                .get();
+        return ((float) sumAge)/getCountStudents();
+    }
+
     public List<Student> getLastStudent(){
         logger.info("Was invoked method for get 5 students");
         return studentRepository.getLastStudent();
