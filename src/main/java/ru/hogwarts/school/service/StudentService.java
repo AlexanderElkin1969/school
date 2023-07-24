@@ -118,27 +118,37 @@ public class StudentService {
         List<String> names = studentRepository.findAll().stream()
                 .map(Student::getName)
                 .collect(Collectors.toList());
-        for (String name : names) {
-            System.out.println(names.indexOf(name) + " " + name);
-        }
-        printString(names.get(0) + " thread_1");
-        printString(names.get(1) + " thread_1");
+        System.out.println("1 " + names.get(0));
+        System.out.println("2 " + names.get(1));
         new Thread(() -> {
-            printString(names.get(2) + " thread_2");
-            printString(names.get(3) + " thread_2");
+            System.out.println("3 " + names.get(2));
+            System.out.println("4 " + names.get(3));
         }).start();
         new Thread(() -> {
-            printString(names.get(4) + " thread_3");
-            printString(names.get(5) + " thread_3");
+            System.out.println("5 " + names.get(4));
+            System.out.println("6 " + names.get(5));
         }).start();
     }
 
-    private void printString(String string){
-        try {
-            Thread.sleep(5000);
-            System.out.println(string);
-        }catch (InterruptedException e){
-            e.getLocalizedMessage();
-        }
+    public void test2(){
+        logger.info("Was invoked method for test2");
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+        printStringSyn("1 " + names.get(0));
+        printStringSyn("2 " + names.get(1));
+        new Thread(() -> {
+            printStringSyn("3 " + names.get(2));
+            printStringSyn("4 " + names.get(3));
+        }).start();
+        new Thread(() -> {
+            printStringSyn("5 " + names.get(4));
+            printStringSyn("6 " + names.get(5));
+        }).start();
     }
+
+    private synchronized void printStringSyn(String string){
+        System.out.println(string);
+    }
+
 }

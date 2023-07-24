@@ -113,5 +113,9 @@ public class StudentController {
         studentService.test1();
     }
 
+    @GetMapping("thread-test2")
+    public void test2() {
+        studentService.test2();
+    }
 
 }
