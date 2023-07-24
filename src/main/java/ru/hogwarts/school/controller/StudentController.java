@@ -108,4 +108,10 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllNameStartingWithA());
     }
 
+    @GetMapping("thread-test1")
+    public void test1() {
+        studentService.test1();
+    }
+
+
 }

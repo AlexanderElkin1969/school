@@ -113,4 +113,32 @@ public class StudentService {
         return studentRepository.findAllFromLast(pageRequest).getContent();
     }
 
+    public void test1(){
+        logger.info("Was invoked method for test1");
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+        for (String name : names) {
+            System.out.println(names.indexOf(name) + " " + name);
+        }
+        printString(names.get(0) + " thread_1");
+        printString(names.get(1) + " thread_1");
+        new Thread(() -> {
+            printString(names.get(2) + " thread_2");
+            printString(names.get(3) + " thread_2");
+        }).start();
+        new Thread(() -> {
+            printString(names.get(4) + " thread_3");
+            printString(names.get(5) + " thread_3");
+        }).start();
+    }
+
+    private void printString(String string){
+        try {
+            Thread.sleep(5000);
+            System.out.println(string);
+        }catch (InterruptedException e){
+            e.getLocalizedMessage();
+        }
+    }
 }
