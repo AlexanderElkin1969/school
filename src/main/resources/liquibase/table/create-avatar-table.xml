@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet  id="create-avatar-table.1"  author="Alex Elkin">
+
+        <preConditions>
+            <not>
+                <tableExists tableName = "avatar"/>
+            </not>
+        </preConditions>
+
+        <createTable  tableName="avatar">
+            <column  name="id"  type="BIGINT"  autoIncrement="true">
+                <constraints  primaryKey="true"  nullable="false"/>
+            </column>
+            <column  name="file_path"  type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column  name="file_size"  type="INT">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="media_type"  type="VARCHAR(50)">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="data"  type="OID">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="student_id"  type="BIGINT">
+                <constraints  nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="avatar"
+                                 baseColumnNames="student_id"
+                                 constraintName="FK_AVATAR_STUDENT_ID"
+                                 referencedTableName="student"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>
