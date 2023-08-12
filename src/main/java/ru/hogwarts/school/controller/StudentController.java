@@ -86,16 +86,36 @@ public class StudentController {
         return studentService.getAverageAge();
     }
 
-    @GetMapping("all/last_5")              // Лучше использовать следующий запрос с параметрами 1 и 5
+    @GetMapping("all/age/average-using-stream")
+    public Float getAverageAgeUsingStream() {
+        return studentService.getAverageAgeUsingStream();
+    }
+
+    @GetMapping("all/last-5")              // Лучше использовать следующий запрос с параметрами 1 и 5
     public ResponseEntity<Collection<Student>> getLastStudent(){
         return ResponseEntity.ok(studentService.getLastStudent());
     }
 
-    @GetMapping("all/from the last/{page}/to/{sizePage}")
+    @GetMapping("all/from-the-last/{page}/to/{sizePage}")
     public ResponseEntity<Collection<Student>> getLastStudent(@PathVariable Integer page,
                                                               @PathVariable Integer sizePage){
         if (page <= 0 || sizePage <= 0){ throw new IllegalArgumentException("Значения должны быть больше 0.");}
         return ResponseEntity.ok(studentService.getLastStudent(page, sizePage));
+    }
+
+    @GetMapping("all/name-starting-A")
+    public ResponseEntity<Collection<String>> getAllNameStartingWithA() {
+        return ResponseEntity.ok(studentService.getAllNameStartingWithA());
+    }
+
+    @GetMapping("thread-test1")
+    public void test1() {
+        studentService.test1();
+    }
+
+    @GetMapping("thread-test2")
+    public void test2() {
+        studentService.test2();
     }
 
 }

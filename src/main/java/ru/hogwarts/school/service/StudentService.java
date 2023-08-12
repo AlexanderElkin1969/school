@@ -10,6 +10,7 @@ import ru.hogwarts.school.entity.Student;
 import ru.hogwarts.school.repository.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -83,15 +84,71 @@ public class StudentService {
         return studentRepository.getAverageAge();
     }
 
+    public Float getAverageAgeUsingStream(){
+        logger.info("Was invoked method for get average age students using a stream");
+        int sumAge = studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .reduce(Integer::sum)
+                .get();
+        return ((float) sumAge)/getCountStudents();
+    }
+
     public List<Student> getLastStudent(){
         logger.info("Was invoked method for get 5 students");
         return studentRepository.getLastStudent();
+    }
+
+    public List<String> getAllNameStartingWithA(){
+        logger.info("Was invoked method for get all students with name starting A");
+        return studentRepository.findAll().stream()
+                .map(student -> student.getName().toUpperCase(Locale.ROOT))
+                .filter(name -> name.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     public List<Student> getLastStudent(Integer page, Integer size){
         logger.info("Was invoked method for get page students by pageNumber = {}, pageSize = {}", page, size);
         PageRequest pageRequest = PageRequest.of(page-1, size);
         return studentRepository.findAllFromLast(pageRequest).getContent();
+    }
+
+    public void test1(){
+        logger.info("Was invoked method for test1");
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+        System.out.println("1 " + names.get(0));
+        System.out.println("2 " + names.get(1));
+        new Thread(() -> {
+            System.out.println("3 " + names.get(2));
+            System.out.println("4 " + names.get(3));
+        }).start();
+        new Thread(() -> {
+            System.out.println("5 " + names.get(4));
+            System.out.println("6 " + names.get(5));
+        }).start();
+    }
+
+    public void test2(){
+        logger.info("Was invoked method for test2");
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .collect(Collectors.toList());
+        printStringSyn("1 " + names.get(0));
+        printStringSyn("2 " + names.get(1));
+        new Thread(() -> {
+            printStringSyn("3 " + names.get(2));
+            printStringSyn("4 " + names.get(3));
+        }).start();
+        new Thread(() -> {
+            printStringSyn("5 " + names.get(4));
+            printStringSyn("6 " + names.get(5));
+        }).start();
+    }
+
+    private synchronized void printStringSyn(String string){
+        System.out.println(string);
     }
 
 }

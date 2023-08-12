@@ -60,4 +60,20 @@ public class FacultyController {
         return facultyService.allFaculty();
     }
 
+    @GetMapping("longest-name")
+    public String getLongestName() {
+        return facultyService.getLongestName();
+    }
+
+    @GetMapping("result")
+    public int getSum() {
+        return facultyService.getSum();
+    }
+
+    @GetMapping("result-using-parallel-streams")
+    public int getSumpUsingParallelStreams() {
+        return facultyService.getSumpUsingParallelStreams();
+    }
+
+
 }

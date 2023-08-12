@@ -10,6 +10,8 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
@@ -65,6 +67,37 @@ public class FacultyService {
     public Collection<Faculty> allFaculty() {
         logger.info("Was invoked method for get all faculty");
         return Collections.unmodifiableCollection(facultyRepository.findAll());
+    }
+
+    public String getLongestName(){
+        logger.info("Was invoked method for get longest name");
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .get();
+    }
+
+    public int getSum(){
+        logger.info("Was invoked method for get sum");
+        long start = System.currentTimeMillis();
+        int sum = Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b );
+        long timeCalculated = System.currentTimeMillis() - start;
+        logger.info("Spent on calculations {} milliseconds", timeCalculated);
+        return sum;
+    }
+
+    public int getSumpUsingParallelStreams(){
+        logger.info("Was invoked method for get sum using parallel stream");
+        long start = System.currentTimeMillis();
+        int sum = Stream.iterate(1, a -> a + 1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b );
+        long timeCalculated = System.currentTimeMillis() - start;
+        logger.info("Spent on calculations {} milliseconds", timeCalculated);
+        return sum;
     }
 
 }
